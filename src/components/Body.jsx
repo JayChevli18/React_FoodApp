@@ -1,10 +1,26 @@
-import React from "react";
+import React, { useState } from "react";
 import { RestaurantCard } from "./RestaurantCard";
-import { restaurantList } from "../utils/mockData";
+import { resList } from "../utils/mockData";
 
 export const Body = () => {
+
+    const [restaurantList, setRestaurantList]=useState(resList);
+
+    const filter=()=>{
+        const filterList=restaurantList.filter((res)=>res.info.avgRating>4.2);
+        setRestaurantList(filterList);
+    }
+
     return (
         <div className='body'>
+            <div className="filter">
+                <button 
+                    className="filter-btn"
+                    onClick={filter}
+                >
+                    Top Rated Restaurants
+                </button>
+            </div>
             <div className='search'>Search</div>
             <div className='res-container'>
                 {
