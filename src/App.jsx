@@ -382,11 +382,9 @@ const restaurantList = [
 
 
 const RestaurantCard = (props) => {
-  console.log(props);
   const { restaurantData } = props;
 
-  const { cloudinaryImageId,name, avgRating, cuisines, deliveryTime } = restaurantData?.info;
-  console.log(restaurantData);
+  const { cloudinaryImageId,name, avgRating, cuisines, deliveryTime, costForTwo } = restaurantData?.info;
   return (
     <div className='res-card' style={{ backgroundColor: "#f0f0f0" }}>
       <img
@@ -395,9 +393,10 @@ const RestaurantCard = (props) => {
         alt="food"
       />
       <h3>{name}</h3>
-      <h4>Biryani, North Indian, Asian</h4>
-      <h4>4.4 stars</h4>
-      <h4>38 minutes</h4>
+      <h4>{cuisines.join(", ")}</h4>
+      <h4>{avgRating} stars</h4>
+      <h4>{costForTwo}</h4>
+      <h4>{deliveryTime} mintues</h4>
     </div>
   )
 }
