@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { RestaurantCard } from "./RestaurantCard";
 import { resList } from "../utils/mockData";
+import { Shimmer } from "./Shimmer";
 
 export const Body = () => {
 
@@ -9,6 +10,10 @@ export const Body = () => {
     const filter=()=>{
         const filterList=restaurantList.filter((res)=>res.info.avgRating>4.2);
         setRestaurantList(filterList);
+    }
+
+    if(restaurantList===0){
+        return <Shimmer></Shimmer>
     }
 
     return (
