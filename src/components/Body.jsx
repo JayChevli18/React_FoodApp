@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { RestaurantCard } from "./RestaurantCard";
 import { resList } from "../utils/mockData";
 import { Shimmer } from "./Shimmer";
+import { Link } from "react-router-dom";
 
 export const Body = () => {
 
@@ -13,24 +14,28 @@ export const Body = () => {
     const filter = () => {
         const filterList = restaurantList.filter((res) => res.info.avgRating > 4.2);
         setRestaurantList(filterList);
+        setFilteredRestaurant(filterList);
     }
 
-    if (restaurantList === 0) {
-        return <Shimmer></Shimmer>
-    }
 
     useEffect(() => {
         fetchData();
     }, []);
+ 
+ 
     const fetchData = async () => {
         const data = await fetch(
             "https://www.swiggy.com/dapi/restaurants/list/v5?lat=23.02760&lng=72.58710&is-seo-homepage-enabled=true&page_type=DESKTOP_WEB_LISTING"
         );
 
         const json = await data.json();
-        console.log(json?.data?.cards[4]?.card?.card?.gridElements?.infoWithStyle?.restaurants[0]?.info?.name);
-        setRestaurantList(json?.data?.cards[4]?.card?.card?.gridElements?.infoWithStyle?.restaurants);
-        setFilteredRestaurant(json?.data?.cards[4]?.card?.card?.gridElements?.infoWithStyle?.restaurants);
+        const restaurants = json?.data?.cards[4]?.card?.card?.gridElements?.infoWithStyle?.restaurants || [];
+        setRestaurantList(restaurants);
+        setFilteredRestaurant(restaurants);
+    }
+ 
+    if (restaurantList.length === 0) {
+        return <Shimmer></Shimmer>;
     }
 
     return (
@@ -47,10 +52,10 @@ export const Body = () => {
                     />
                     <button
                         onClick={() => {
-                            const filteredRestaurant = restaurantList.filter((res) =>{
-                                    const result=res.info?.name.toLowerCase().includes(search.toLowerCase());
-                                    return result;
-                                }
+                            const filteredRestaurant = restaurantList.filter((res) => {
+                                const result = res.info?.name.toLowerCase().includes(search.toLowerCase());
+                                return result;
+                            }
                             );
                             setFilteredRestaurant(filteredRestaurant);
                         }}
@@ -66,7 +71,12 @@ export const Body = () => {
             <div className='res-container'>
                 {
                     filteredRestaurant.map((restaurant) => (
-                        <RestaurantCard key={restaurant.info.id} restaurantData={restaurant} />
+                        <Link
+                            key={restaurant.info.id}
+                            to={"/restaurants/"+ restaurant.info.id}
+                        >
+                            <RestaurantCard key={restaurant.info.id} restaurantData={restaurant} />
+                        </Link>
                     ))
                 }
 
