@@ -10,11 +10,12 @@ export const About=()=>{
                 contact="@JC18"
             />
 
-            <UserClass
+            {/* <UserClass
                 name="Jay"
                 location="Surat"
                 contact="@JC18"
-            />
+            /> */}
         </div>
     )
 }
+//export default About;
