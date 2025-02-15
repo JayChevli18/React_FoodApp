@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-export const User=(props)=>{
+const User=(props)=>{
     
     const {name, location, contact}=props;
     const [count]=useState(0);
@@ -16,3 +16,4 @@ export const User=(props)=>{
     )
 }
 
+export default User;

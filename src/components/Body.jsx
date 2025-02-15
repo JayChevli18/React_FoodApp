@@ -1,15 +1,18 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { RestaurantCard, withPromotedLabel } from "./RestaurantCard";
 // import {} from "./RestaurantCard";
 import { Shimmer } from "./Shimmer";
 import { Link } from "react-router-dom";
 import { useOnlineStatus } from "../utils/useOnlineStatus";
+import { UserContext  } from "../utils/UserContext";
+
 export const Body = () => {
 
     const [restaurantList, setRestaurantList] = useState([]);
     const [filteredRestaurant, setFilteredRestaurant] = useState([]);
     const [search, setSearch] = useState("");
     const RestaurantCardPromoted=withPromotedLabel(RestaurantCard);
+    const {setUserName, loggedInUser}=useContext(UserContext);
 
     const filter = () => {
         const filterList = restaurantList.filter((res) => res.info.avgRating > 4.2);
@@ -30,7 +33,7 @@ export const Body = () => {
 
         const json = await data.json();
         const restaurants = json?.data?.cards[4]?.card?.card?.gridElements?.infoWithStyle?.restaurants || [];
-        console.log(json);
+        // console.log(json);
         
         setRestaurantList(restaurants);
         setFilteredRestaurant(restaurants);
@@ -78,6 +81,15 @@ export const Body = () => {
                         Top Rated Restaurants
                     </button>
                 </div>
+                <div className="m-4 p-4 flex items-center" >
+                    <input
+                        type="text"
+                        className="px-4 py-2 bg-gray-100 rounded-lg"
+                        value={loggedInUser}
+                        onChange={(e)=>setUserName(e.target.value)}
+                    />
+                </div>
+
             </div>
             <div className='flex flex-wrap'>
                 {
